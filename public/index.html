@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LINE風チャット</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div id="login-screen">
+    <h1>ログイン</h1>
+    <input type="text" id="username" placeholder="ユーザー名">
+    <input type="password" id="password" placeholder="パスワード (数字4桁)">
+    <button id="login-button">ログイン</button>
+  </div>
+  
+  <div id="chat-screen" class="hidden">
+    <div id="messages"></div>
+    <input type="text" id="message-input" placeholder="メッセージを入力...">
+    <button id="send-button">送信</button>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
