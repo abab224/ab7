@@ -1,32 +1,26 @@
-const socket = io();
-
-document.getElementById("login-button").addEventListener("click", () => {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
-  if (username && password) {
-    socket.emit("login", { username, password });
-    document.getElementById("login-screen").style.display = "none";
-    document.getElementById("chat-screen").style.display = "flex";
-  }
-});
-
-document.getElementById("send-button").addEventListener("click", () => {
-  const message = document.getElementById("message").value;
-  socket.emit("message", message);
-  document.getElementById("message").value = "";
-});
-
 socket.on("message", (data) => {
   const chatBox = document.getElementById("chat-box");
+
+  // メッセージのコンテナ
   const messageElement = document.createElement("div");
   messageElement.classList.add("message", data.self ? "self" : "other");
 
+  // 相手のメッセージにユーザー名を表示
+  if (!data.self) {
+    const usernameElement = document.createElement("div");
+    usernameElement.classList.add("username");
+    usernameElement.textContent = data.username; // ユーザー名を追加
+    messageElement.appendChild(usernameElement);
+  }
+
+  // メッセージの内容
   const contentElement = document.createElement("div");
   contentElement.classList.add("message-content", data.self ? "self" : "other");
-  contentElement.textContent = data.username + ": " + data.message;
+  contentElement.textContent = data.message;
 
   messageElement.appendChild(contentElement);
   chatBox.appendChild(messageElement);
+
+  // スクロールを一番下に
   chatBox.scrollTop = chatBox.scrollHeight;
 });
