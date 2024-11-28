@@ -1,59 +1,69 @@
-/* 名前表示用 */
-.username {
-  font-size: 12px;
-  font-weight: bold;
-  margin-bottom: 3px;
-  color: #555;
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f5f5f5;
 }
 
-/* メッセージのテキスト背景を文字長さに合わせる */
-.text {
-  background: #ffffff;
-  padding: 10px;
-  border-radius: 8px;
-  display: inline-block;
-  max-width: 80%;
-  word-wrap: break-word;
-}
-
-/* 自分のメッセージのデザイン */
-.message.self .text {
-  background: #dcf8c6;
-  text-align: right;
-}
-
-/* システムメッセージ */
-.system-message {
-  text-align: center;
-  color: #888;
-  font-style: italic;
-  margin: 5px 0;
-}
-
-/* 入力フォーム全体 */
-form {
+#login-screen {
   display: flex;
-  gap: 5px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #fff;
 }
 
-/* メッセージ入力欄 */
-input[type="text"] {
-  width: 70%; /* 画面幅の70% */
+#login-screen input {
+  margin: 5px 0;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
+  width: 80%;
 }
 
-/* 送信ボタン */
-button {
-  background: #009688;
-  color: white;
-  border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
-  cursor: pointer;
+#chat-screen {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 
-button:hover {
-  background: #00796b;
+#chat-box {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+.message {
+  display: flex;
+  margin: 5px;
+}
+
+.message.self {
+  justify-content: flex-end;
+}
+
+.message-content {
+  max-width: 60%;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.message-content.self {
+  background-color: #dcf8c6;
+  align-self: flex-end;
+}
+
+.message-content.other {
+  background-color: #ffffff;
+}
+
+#message-input {
+  display: flex;
+  padding: 10px;
+  background-color: #fff;
+}
+
+#message-input input {
+  flex: 1;
+  padding: 10px;
+  margin-right: 10px;
 }

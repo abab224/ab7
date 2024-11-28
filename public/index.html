@@ -3,27 +3,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login</title>
+  <title>LINE風チャット</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="login-container">
-    <h1>Welcome to Chat</h1>
-    <form id="login-form">
-      <input type="text" id="username" placeholder="Username" required>
-      <input type="password" id="password" placeholder="4-digit Password" required maxlength="4">
-      <button type="submit">Login</button>
-    </form>
+  <div id="login-screen">
+    <h2>ログイン</h2>
+    <input type="text" id="username" placeholder="ユーザー名">
+    <input type="password" id="password" placeholder="4桁のパスワード">
+    <button id="login-button">ログイン</button>
   </div>
-  <script>
-    document.getElementById('login-form').addEventListener('submit', (e) => {
-      e.preventDefault();
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
 
-      // ログイン後にチャット画面へ遷移
-      window.location.href = `chat.html?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`;
-    });
-  </script>
+  <div id="chat-screen" style="display: none;">
+    <div id="chat-box"></div>
+    <div id="message-input">
+      <input type="text" id="message" placeholder="メッセージを入力">
+      <button id="send-button">送信</button>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="client.js"></script>
 </body>
 </html>

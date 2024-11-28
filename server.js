@@ -1,26 +1,39 @@
-const users = {}; // 接続中のユーザーを管理
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
 
-io.on('connection', (socket) => {
-  console.log('A user connected');
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 
-  // 入室時の処理
-  socket.on('user join', (username) => {
-    users[socket.id] = username;
-    io.emit('user join', username); // 全員に通知
+const PORT = process.env.PORT || 10000;
+
+app.use(express.static("public"));
+
+let users = {};
+
+io.on("connection", (socket) => {
+  console.log("ユーザーが接続しました");
+
+  socket.on("login", (data) => {
+    users[socket.id] = data.username;
+    io.emit("message", { username: data.username, message: "が入室しました", self: false });
   });
 
-  // チャットメッセージの受信
-  socket.on('chat message', (data) => {
-    io.emit('chat message', data); // 全員に送信
+  socket.on("message", (message) => {
+    const username = users[socket.id] || "匿名";
+    io.emit("message", { username, message, self: false });
   });
 
-  // 切断時の処理
-  socket.on('disconnect', () => {
+  socket.on("disconnect", () => {
     const username = users[socket.id];
-    delete users[socket.id];
     if (username) {
-      io.emit('user leave', username); // 全員に通知
+      io.emit("message", { username, message: "が退室しました", self: false });
+      delete users[socket.id];
     }
-    console.log('A user disconnected');
   });
+});
+
+server.listen(PORT, () => {
+  console.log(`Server is running on port ${PORT}`);
 });
