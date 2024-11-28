@@ -20,14 +20,22 @@ body {
 
 #chat {
   display: none;
-  background-color: #f7f7f7;
+  flex-direction: column;
+}
+
+#chatBox {
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
+  padding: 10px;
+  background-color: #c1f0f5;
 }
 
 .message {
   display: flex;
   flex-direction: column;
   margin: 10px;
-  max-width: 80%;
+  max-width: 70%;
 }
 
 .self {
@@ -53,14 +61,6 @@ body {
 
 .text {
   font-size: 14px;
-}
-
-#chatBox {
-  flex: 1;
-  overflow-y: auto;
-  width: 100%;
-  padding: 10px;
-  background-color: #bbf6f6;
 }
 
 #chatForm {

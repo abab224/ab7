@@ -35,7 +35,7 @@ io.on("connection", (socket) => {
 
   socket.on("message", (message) => {
     const username = users[socket.id] || "匿名";
-    io.emit("message", { username, message, self: false });
+    io.emit("message", { username, message, self: socket.id === message.senderId });
   });
 
   socket.on("disconnect", () => {

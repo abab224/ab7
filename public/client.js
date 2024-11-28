@@ -2,7 +2,7 @@ const socket = io();
 
 // ログインフォーム送信時の処理
 document.getElementById("loginForm").addEventListener("submit", (e) => {
-  e.preventDefault(); // デフォルトのフォーム送信を防ぐ
+  e.preventDefault();
 
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
@@ -19,7 +19,7 @@ document.getElementById("loginForm").addEventListener("submit", (e) => {
 // サーバーからログイン成功を受信
 socket.on("loginSuccess", () => {
   document.getElementById("login").style.display = "none";
-  document.getElementById("chat").style.display = "block";
+  document.getElementById("chat").style.display = "flex";
 });
 
 // ログインエラーを受信
@@ -34,7 +34,7 @@ document.getElementById("chatForm").addEventListener("submit", (e) => {
   const message = document.getElementById("message").value;
   if (!message) return;
 
-  socket.emit("message", message);
+  socket.emit("message", { text: message, senderId: socket.id });
 
   // 自分のメッセージを右側に表示
   appendMessage({ username: "自分", message, self: true });
