@@ -20,24 +20,14 @@ body {
 
 #chat {
   display: none;
-  flex-direction: column;
-  justify-content: flex-end;
-}
-
-#chatBox {
-  flex: 1;
-  overflow-y: auto;
-  width: 100%;
-  padding: 10px;
-  background-color: #c4e8f9;
+  background-color: #f7f7f7;
 }
 
 .message {
   display: flex;
   flex-direction: column;
   margin: 10px;
-  max-width: 70%;
-  word-wrap: break-word;
+  max-width: 80%;
 }
 
 .self {
@@ -63,13 +53,19 @@ body {
 
 .text {
   font-size: 14px;
-  word-break: break-word;
+}
+
+#chatBox {
+  flex: 1;
+  overflow-y: auto;
+  width: 100%;
+  padding: 10px;
+  background-color: #a4c9ce;
 }
 
 #chatForm {
   display: flex;
   width: 100%;
-  margin-top: 10px;
 }
 
 #message {
@@ -88,19 +84,4 @@ button {
 
 button:hover {
   background-color: #075e54;
-}
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  #chatBox {
-    padding: 5px;
-  }
-
-  .message {
-    max-width: 90%;
-  }
-
-  button {
-    padding: 10px;
-  }
 }
