@@ -28,7 +28,7 @@ body {
   overflow-y: auto;
   width: 100%;
   padding: 10px;
-  background-color: #c1f0f5;
+  background-color: #c5ecf4;
 }
 
 .message {
@@ -36,6 +36,7 @@ body {
   flex-direction: column;
   margin: 10px;
   max-width: 70%;
+  word-wrap: break-word;
 }
 
 .self {
@@ -61,6 +62,7 @@ body {
 
 .text {
   font-size: 14px;
+  word-break: break-word;
 }
 
 #chatForm {
@@ -70,18 +72,4 @@ body {
 
 #message {
   flex: 1;
-  padding: 10px;
-  font-size: 14px;
-}
-
-button {
-  padding: 10px 20px;
-  background-color: #128c7e;
-  color: white;
-  border: none;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #075e54;
-}
+  padding: 10p
