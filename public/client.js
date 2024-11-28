@@ -14,10 +14,17 @@ document.getElementById("loginForm").addEventListener("submit", (e) => {
 
   // サーバーにログイン情報を送信
   socket.emit("login", { username, password });
+});
 
-  // ログイン成功時にチャット画面を表示
+// サーバーからログイン成功を受信
+socket.on("loginSuccess", () => {
   document.getElementById("login").style.display = "none";
   document.getElementById("chat").style.display = "block";
+});
+
+// ログインエラーを受信
+socket.on("loginError", (error) => {
+  alert(error);
 });
 
 // チャット送信時の処理
@@ -40,11 +47,6 @@ socket.on("message", (data) => {
   appendMessage(data);
 });
 
-// エラーを受信したときの処理
-socket.on("loginError", (error) => {
-  alert(error);
-});
-
 // メッセージを画面に追加する関数
 function appendMessage(data) {
   const chatBox = document.getElementById("chatBox");
@@ -55,4 +57,16 @@ function appendMessage(data) {
 
   if (!data.self) {
     const usernameElement = document.createElement("div");
-    usern
+    usernameElement.classList.add("username");
+    usernameElement.textContent = data.username;
+    messageElement.appendChild(usernameElement);
+  }
+
+  const textElement = document.createElement("div");
+  textElement.classList.add("text");
+  textElement.textContent = data.message;
+  messageElement.appendChild(textElement);
+
+  chatBox.appendChild(messageElement);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}

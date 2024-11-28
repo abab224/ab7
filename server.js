@@ -26,6 +26,9 @@ io.on("connection", (socket) => {
     // ユーザー情報を登録
     users[socket.id] = username;
 
+    // ログイン成功を通知
+    socket.emit("loginSuccess");
+
     // 入室メッセージを送信
     io.emit("message", { username, message: "が入室しました", self: false });
   });
