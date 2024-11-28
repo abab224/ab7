@@ -9,7 +9,7 @@ body {
     max-width: 400px;
     margin: 50px auto;
     padding: 20px;
-    background: white;
+    background: rgb(233, 235, 237);
     border-radius: 10px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   }
@@ -17,7 +17,7 @@ body {
   #chat-box {
     height: 300px;
     overflow-y: auto;
-    background: #ffffff;
+    background: #49c6d2;
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 8px;
