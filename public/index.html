@@ -3,25 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>リアルタイムチャット</title>
+  <title>LINE風チャット</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="login">
-    <form id="loginForm">
-      <h1>ログイン</h1>
-      <input type="text" id="username" placeholder="ユーザー名" required>
-      <input type="password" id="password" placeholder="4桁のパスワード" pattern="\d{4}" required>
-      <button type="submit">ログイン</button>
-    </form>
+  <div id="login-screen">
+    <h2>ログイン</h2>
+    <input type="text" id="username" placeholder="ユーザー名">
+    <input type="password" id="password" placeholder="4桁のパスワード">
+    <button id="login-button">ログイン</button>
   </div>
 
-  <div id="chat">
-    <div id="chatBox"></div>
-    <form id="chatForm">
+  <div id="chat-screen" style="display: none;">
+    <div id="chat-box"></div>
+    <div id="message-input">
       <input type="text" id="message" placeholder="メッセージを入力">
-      <button type="submit">送信</button>
-    </form>
+      <button id="send-button">送信</button>
+    </div>
   </div>
 
   <script src="/socket.io/socket.io.js"></script>
