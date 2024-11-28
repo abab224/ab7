@@ -1,27 +1,26 @@
-const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
-const path = require('path');
-
-const app = express();
-const server = http.createServer(app);
-const io = socketIo(server);
-
-app.use(express.static(path.join(__dirname, 'public')));
+const users = {}; // 接続中のユーザーを管理
 
 io.on('connection', (socket) => {
   console.log('A user connected');
 
-  socket.on('chat message', (data) => {
-    io.emit('chat message', data); // 全クライアントにメッセージを送信
+  // 入室時の処理
+  socket.on('user join', (username) => {
+    users[socket.id] = username;
+    io.emit('user join', username); // 全員に通知
   });
 
+  // チャットメッセージの受信
+  socket.on('chat message', (data) => {
+    io.emit('chat message', data); // 全員に送信
+  });
+
+  // 切断時の処理
   socket.on('disconnect', () => {
+    const username = users[socket.id];
+    delete users[socket.id];
+    if (username) {
+      io.emit('user leave', username); // 全員に通知
+    }
     console.log('A user disconnected');
   });
-});
-
-const PORT = process.env.PORT || 10000;
-server.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
 });

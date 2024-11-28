@@ -1,64 +1,59 @@
-body {
-    font-family: Arial, sans-serif;
-    background-color: #ece5dd;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .login-container, .chat-container {
-    max-width: 400px;
-    margin: 50px auto;
-    padding: 20px;
-    background: rgb(233, 235, 237);
-    border-radius: 10px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  }
-  
-  #chat-box {
-    height: 300px;
-    overflow-y: auto;
-    background: #49c6d2;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-  }
-  
-  .message {
-    margin: 5px 0;
-    padding: 10px;
-    border-radius: 8px;
-    max-width: 80%;
-  }
-  
-  .message.self {
-    background: #dcf8c6;
-    margin-left: auto;
-    text-align: right;
-  }
-  
-  .message {
-    background: #fff;
-  }
-  
-  form {
-    display: flex;
-    gap: 5px;
-  }
-  
-  input, button {
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #ddd;
-  }
-  
-  button {
-    background: #34b7f1;
-    color: white;
-    cursor: pointer;
-  }
-  
-  button:hover {
-    background: #128c7e;
-  }
-  
+/* 名前表示用 */
+.username {
+  font-size: 12px;
+  font-weight: bold;
+  margin-bottom: 3px;
+  color: #555;
+}
+
+/* メッセージのテキスト背景を文字長さに合わせる */
+.text {
+  background: #ffffff;
+  padding: 10px;
+  border-radius: 8px;
+  display: inline-block;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+/* 自分のメッセージのデザイン */
+.message.self .text {
+  background: #dcf8c6;
+  text-align: right;
+}
+
+/* システムメッセージ */
+.system-message {
+  text-align: center;
+  color: #888;
+  font-style: italic;
+  margin: 5px 0;
+}
+
+/* 入力フォーム全体 */
+form {
+  display: flex;
+  gap: 5px;
+}
+
+/* メッセージ入力欄 */
+input[type="text"] {
+  width: 70%; /* 画面幅の70% */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* 送信ボタン */
+button {
+  background: #009688;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #00796b;
+}
