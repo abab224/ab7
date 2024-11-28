@@ -15,39 +15,35 @@ let users = {};
 io.on("connection", (socket) => {
   console.log("ユーザーが接続しました");
 
-  // ユーザーがログイン
   socket.on("login", (data) => {
-    users[socket.id] = data.username;
-    io.emit("systemMessage", { 
-      username: data.username, 
-      message: "が入室しました" 
-    });
+    const { username, password } = data;
+
+    if (!username || !password || password.length !== 4 || isNaN(password)) {
+      socket.emit("loginError", "正しいユーザー名と4桁の数字パスワードを入力してください");
+      return;
+    }
+
+    // ユーザー情報を登録
+    users[socket.id] = username;
+
+    // 入室メッセージを送信
+    io.emit("message", { username, message: "が入室しました", self: false });
   });
 
-  // ユーザーがメッセージを送信
   socket.on("message", (message) => {
     const username = users[socket.id] || "匿名";
-    io.emit("message", { 
-      username, 
-      message, 
-      self: socket.id === socket.id 
-    });
+    io.emit("message", { username, message, self: false });
   });
 
-  // ユーザーが切断
   socket.on("disconnect", () => {
     const username = users[socket.id];
     if (username) {
-      io.emit("systemMessage", { 
-        username, 
-        message: "が退室しました" 
-      });
+      io.emit("message", { username, message: "が退室しました", self: false });
       delete users[socket.id];
     }
   });
 });
 
-// サーバーを開始
 server.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
