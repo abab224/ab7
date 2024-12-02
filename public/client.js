@@ -10,13 +10,17 @@ const chatBox = document.getElementById("chatBox");
 const messageInput = document.getElementById("message");
 const sendButton = document.getElementById("send");
 
+// ユーザーデータ
+let currentUsername;
+
 // ログイン処理
 loginForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  const username = usernameInput.value;
-  const password = passwordInput.value;
+  const username = usernameInput.value.trim();
+  const password = passwordInput.value.trim();
 
   if (password.length === 4) {
+    currentUsername = username;
     socket.emit("login", { username });
     loginScreen.classList.add("hidden");
     chatScreen.classList.add("active");
@@ -40,6 +44,16 @@ socket.on("message", (data) => {
   addMessage(data);
 });
 
+// 入室・退室メッセージ
+socket.on("system", (message) => {
+  addSystemMessage(message);
+});
+
+// 入室状況の通知
+socket.on("status", (message) => {
+  addSystemMessage(message);
+});
+
 // メッセージを画面に追加
 function addMessage({ username, message, self }) {
   const messageElement = document.createElement("div");
@@ -54,6 +68,21 @@ function addMessage({ username, message, self }) {
 
   const bubble = document.createElement("div");
   bubble.classList.add("message-bubble");
+  bubble.textContent = message;
+
+  messageElement.appendChild(bubble);
+  chatBox.appendChild(messageElement);
+  chatBox.scrollTop = chatBox.scrollHeight;
+}
+
+// システムメッセージを追加
+function addSystemMessage(message) {
+  const messageElement = document.createElement("div");
+  messageElement.classList.add("message");
+  const bubble = document.createElement("div");
+  bubble.classList.add("message-bubble");
+  bubble.style.backgroundColor = "#f0f0f0";
+  bubble.style.color = "#333";
   bubble.textContent = message;
 
   messageElement.appendChild(bubble);
