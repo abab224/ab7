@@ -18,30 +18,25 @@ socket.on("loginError", (error) => {
   alert(error);
 });
 
-// メッセージ送信機能
 const chatForm = document.getElementById("chatForm");
 chatForm.addEventListener("submit", (e) => {
-  e.preventDefault(); // デフォルトのフォーム送信を無効化
+  e.preventDefault();
 
   const messageInput = document.getElementById("message");
-  const message = messageInput.value.trim(); // 前後の空白をトリム
+  const message = messageInput.value.trim();
 
-  if (!message) return; // メッセージが空の場合は送信しない
+  if (!message) return;
 
-  // メッセージをサーバーに送信
   socket.emit("message", { text: message, senderId: socket.id });
-
-  // 自分のメッセージを即座に表示
   appendMessage({ username: "自分", message, self: true });
 
-  messageInput.value = ""; // 入力フィールドをクリア
+  messageInput.value = "";
 });
 
 socket.on("message", (data) => {
   appendMessage(data);
 });
 
-// メッセージを画面に追加
 function appendMessage(data) {
   const chatBox = document.getElementById("chatBox");
   const messageElement = document.createElement("div");
@@ -62,5 +57,5 @@ function appendMessage(data) {
   messageElement.appendChild(textElement);
 
   chatBox.appendChild(messageElement);
-  chatBox.scrollTop = chatBox.scrollHeight; // 最新メッセージへスクロール
+  chatBox.scrollTop = chatBox.scrollHeight;
 }

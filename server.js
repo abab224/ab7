@@ -15,6 +15,7 @@ let users = {};
 io.on("connection", (socket) => {
   console.log("ユーザーが接続しました");
 
+  // ユーザーがログイン
   socket.on("login", (data) => {
     const { username, password } = data;
 
@@ -29,14 +30,19 @@ io.on("connection", (socket) => {
     io.emit("message", { username, message: "が入室しました", self: false });
   });
 
+  // メッセージ送信
   socket.on("message", (data) => {
     const username = users[socket.id] || "匿名";
     const message = data.text;
 
-    // クライアントから受け取ったメッセージを全クライアントに送信
-    io.emit("message", { username, message, self: false });
+    io.emit("message", {
+      username,
+      message,
+      self: socket.id === data.senderId, // 自分のメッセージかどうか
+    });
   });
 
+  // ユーザーが切断
   socket.on("disconnect", () => {
     const username = users[socket.id];
     if (username) {
