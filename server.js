@@ -15,27 +15,30 @@ let users = {};
 io.on("connection", (socket) => {
   console.log("ユーザーが接続しました");
 
-  socket.on("login", (data) => {
-    users[socket.id] = data.username;
-    socket.broadcast.emit("message", {
-      username: data.username,
-      message: "が入室しました",
-      self: false,
-    });
+  socket.on("login", ({ username }) => {
+    users[socket.id] = username;
+
+    // 既存のユーザーに入室状況を通知
+    socket.emit(
+      "status",
+      Object.keys(users).length > 1
+        ? `${Object.values(users).join(", ")} が入室しています`
+        : "相手ユーザをお待ちください"
+    );
+
+    // 入室通知
+    socket.broadcast.emit("system", `${username} が入室しました`);
   });
 
-  socket.on("message", (data) => {
-    socket.broadcast.emit("message", { ...data, self: false });
+  socket.on("message", (message) => {
+    const username = users[socket.id] || "匿名";
+    socket.broadcast.emit("message", { username, message, self: false });
   });
 
   socket.on("disconnect", () => {
     const username = users[socket.id];
     if (username) {
-      socket.broadcast.emit("message", {
-        username,
-        message: "が退室しました",
-        self: false,
-      });
+      socket.broadcast.emit("system", `${username} が退室しました`);
       delete users[socket.id];
     }
   });
