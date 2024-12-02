@@ -64,7 +64,8 @@ body {
 /* メッセージスタイル */
 .message {
   display: flex;
-  align-items: flex-start;
+  flex-direction: column; /* 縦方向に配置 */
+  align-items: flex-start; /* 左端に揃える */
   max-width: 100%;
   width: 100%; /* 親要素の幅を100%に設定 */
 }
@@ -85,7 +86,6 @@ body {
   font-size: 12px;             /* ユーザー名のフォントサイズ */
   color: #888;                /* ユーザー名の文字色 */
   margin-bottom: 5px;         /* ユーザー名とメッセージの間に余白を追加 */
-  align-self: flex-start;     /* 左端に揃える */
 }
 
 
