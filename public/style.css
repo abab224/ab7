@@ -21,6 +21,7 @@ body {
 #chat {
   display: none;
   flex-direction: column;
+  justify-content: flex-end;
 }
 
 #chatBox {
@@ -28,7 +29,7 @@ body {
   overflow-y: auto;
   width: 100%;
   padding: 10px;
-  background-color: #d3eff8;
+  background-color: #bbe2f2;
 }
 
 .message {
@@ -68,6 +69,7 @@ body {
 #chatForm {
   display: flex;
   width: 100%;
+  margin-top: 10px;
 }
 
 #message {
