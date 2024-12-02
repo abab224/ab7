@@ -10,7 +10,7 @@ const chatBox = document.getElementById("chatBox");
 const messageInput = document.getElementById("message");
 const sendButton = document.getElementById("send");
 
-// ユーザーデータ
+// ユーザー情報
 let currentUsername;
 
 // ログイン処理
@@ -19,14 +19,20 @@ loginForm.addEventListener("submit", (e) => {
   const username = usernameInput.value.trim();
   const password = passwordInput.value.trim();
 
-  if (password.length === 4) {
-    currentUsername = username;
-    socket.emit("login", { username });
-    loginScreen.classList.add("hidden");
-    chatScreen.classList.add("active");
-  } else {
-    alert("パスワードは4桁の数字で入力してください");
+  // パスワード形式の検証 (大文字1文字 + 数字4桁)
+  const passwordRegex = /^[A-Z][0-9]{4}$/;
+  if (!passwordRegex.test(password)) {
+    alert("パスワードは大文字1文字と数字4桁の形式である必要があります");
+    return;
   }
+
+  // サーバーにログイン情報を送信
+  currentUsername = username;
+  socket.emit("login", { username, password });
+
+  // ログイン画面を非表示にし、チャット画面を表示
+  loginScreen.classList.add("hidden");
+  chatScreen.classList.add("active");
 });
 
 // メッセージ送信
@@ -39,12 +45,12 @@ sendButton.addEventListener("click", () => {
   }
 });
 
-// メッセージ受信
+// サーバーからのメッセージ受信
 socket.on("message", (data) => {
   addMessage(data);
 });
 
-// 入室・退室メッセージ
+// システムメッセージ受信
 socket.on("system", (message) => {
   addSystemMessage(message);
 });
@@ -52,6 +58,11 @@ socket.on("system", (message) => {
 // 入室状況の通知
 socket.on("status", (message) => {
   addSystemMessage(message);
+});
+
+// エラーメッセージの表示
+socket.on("error", (errorMessage) => {
+  alert(errorMessage);
 });
 
 // メッセージを画面に追加
