@@ -1,59 +1,62 @@
 const socket = io();
 
+// DOM要素
+const loginForm = document.getElementById("loginForm");
+const usernameInput = document.getElementById("username");
+const passwordInput = document.getElementById("password");
+const loginScreen = document.getElementById("login");
+const chatScreen = document.getElementById("chat");
+const chatBox = document.getElementById("chatBox");
+const messageInput = document.getElementById("message");
+const sendButton = document.getElementById("send");
+
 // ログイン処理
-document.getElementById("loginForm").addEventListener("submit", (e) => {
+loginForm.addEventListener("submit", (e) => {
   e.preventDefault();
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-  socket.emit("login", { username, password });
-});
+  const username = usernameInput.value;
+  const password = passwordInput.value;
 
-socket.on("loginSuccess", () => {
-  document.getElementById("login").style.display = "none";
-  document.getElementById("chat").style.display = "flex";
-});
-
-socket.on("loginError", (error) => {
-  alert(error);
+  if (password.length === 4) {
+    socket.emit("login", { username });
+    loginScreen.classList.add("hidden");
+    chatScreen.classList.add("active");
+  } else {
+    alert("パスワードは4桁の数字で入力してください");
+  }
 });
 
 // メッセージ送信
-document.getElementById("chatForm").addEventListener("submit", (e) => {
-  e.preventDefault();
-  const messageInput = document.getElementById("message");
+sendButton.addEventListener("click", () => {
   const message = messageInput.value.trim();
-
-  if (!message) return;
-
-  socket.emit("message", { text: message });
-  appendMessage({ message, self: true });
-  messageInput.value = "";
+  if (message) {
+    socket.emit("message", message);
+    addMessage({ username: "あなた", message, self: true });
+    messageInput.value = "";
+  }
 });
 
+// メッセージ受信
 socket.on("message", (data) => {
-  appendMessage(data);
+  addMessage(data);
 });
 
-// メッセージの追加
-function appendMessage(data) {
-  const chatBox = document.getElementById("chatBox");
+// メッセージを画面に追加
+function addMessage({ username, message, self }) {
   const messageElement = document.createElement("div");
+  messageElement.classList.add("message", self ? "sent" : "received");
 
-  messageElement.classList.add("message");
-  messageElement.classList.add(data.self ? "self" : "other");
-
-  if (!data.self) {
+  if (!self) {
     const usernameElement = document.createElement("div");
-    usernameElement.classList.add("username");
-    usernameElement.textContent = data.username;
+    usernameElement.classList.add("message-username");
+    usernameElement.textContent = username;
     messageElement.appendChild(usernameElement);
   }
 
-  const textElement = document.createElement("div");
-  textElement.classList.add("text");
-  textElement.textContent = data.message;
-  messageElement.appendChild(textElement);
+  const bubble = document.createElement("div");
+  bubble.classList.add("message-bubble");
+  bubble.textContent = message;
 
+  messageElement.appendChild(bubble);
   chatBox.appendChild(messageElement);
   chatBox.scrollTop = chatBox.scrollHeight;
 }
