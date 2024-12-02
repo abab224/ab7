@@ -3,31 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>LINE風リアルタイムチャット</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>LINE風チャットUI</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- ログイン画面 -->
   <div id="login">
     <form id="loginForm">
       <h2>ログイン</h2>
-      <input type="text" id="username" placeholder="ユーザー名" required>
-      <input type="password" id="password" placeholder="パスワード (4桁)" required>
+      <input type="text" id="username" placeholder="ユーザー名" required />
+      <input type="password" id="password" placeholder="パスワード (4桁の数字)" required />
       <button type="submit">ログイン</button>
     </form>
   </div>
 
-  <!-- チャット画面 -->
-  <div id="chat" style="display: none;">
-    <div class="chat-header">チャット</div>
-    <div id="chatBox" class="chat-messages"></div>
-    <form id="chatForm" class="chat-input">
-      <input type="text" id="message" placeholder="メッセージを入力..." autocomplete="off">
-      <button type="submit">送信</button>
-    </form>
-  </div>
+  <div id="chat" class="chat-container">
+    <!-- ヘッダー -->
+    <div class="chat-header">
+      <span class="chat-title">チャット</span>
+    </div>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="client.js"></script>
+    <!-- チャットエリア -->
+    <div id="chatBox" class="chat-messages"></div>
+
+    <!-- 入力エリア -->
+    <div id="chatForm" class="chat-input">
+      <input type="text" id="message" class="input-box" placeholder="メッセージを入力..." />
+      <button id="send" class="send-button">送信</button>
+    </div>
+  </div>
 </body>
 </html>

@@ -1,11 +1,10 @@
 const socket = io();
 
+// ログイン処理
 document.getElementById("loginForm").addEventListener("submit", (e) => {
   e.preventDefault();
-
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
-
   socket.emit("login", { username, password });
 });
 
@@ -18,18 +17,16 @@ socket.on("loginError", (error) => {
   alert(error);
 });
 
-const chatForm = document.getElementById("chatForm");
-chatForm.addEventListener("submit", (e) => {
+// メッセージ送信
+document.getElementById("chatForm").addEventListener("submit", (e) => {
   e.preventDefault();
-
   const messageInput = document.getElementById("message");
   const message = messageInput.value.trim();
 
   if (!message) return;
 
   socket.emit("message", { text: message });
-  appendMessage({ username: "自分", message, self: true });
-
+  appendMessage({ message, self: true });
   messageInput.value = "";
 });
 
@@ -37,10 +34,7 @@ socket.on("message", (data) => {
   appendMessage(data);
 });
 
-socket.on("systemMessage", (message) => {
-  appendMessage({ message, system: true });
-});
-
+// メッセージの追加
 function appendMessage(data) {
   const chatBox = document.getElementById("chatBox");
   const messageElement = document.createElement("div");
@@ -48,7 +42,7 @@ function appendMessage(data) {
   messageElement.classList.add("message");
   messageElement.classList.add(data.self ? "self" : "other");
 
-  if (data.username && !data.self) {
+  if (!data.self) {
     const usernameElement = document.createElement("div");
     usernameElement.classList.add("username");
     usernameElement.textContent = data.username;
@@ -56,6 +50,7 @@ function appendMessage(data) {
   }
 
   const textElement = document.createElement("div");
+  textElement.classList.add("text");
   textElement.textContent = data.message;
   messageElement.appendChild(textElement);
 

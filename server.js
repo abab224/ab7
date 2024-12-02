@@ -1,47 +1,49 @@
 const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
-const path = require("path");
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server);
 
+const PORT = process.env.PORT || 10000;
+
+app.use(express.static("public"));
+
 let users = {};
 
-app.use(express.static(path.join(__dirname, "public")));
-
 io.on("connection", (socket) => {
-  console.log("ユーザーが接続しました。");
+  console.log("ユーザーが接続しました");
 
-  socket.on("login", ({ username, password }) => {
-    if (username && password) {
-      users[socket.id] = { username, password };
-      socket.emit("loginSuccess");
-      io.emit("systemMessage", `${username} が入室しました`);
-    } else {
-      socket.emit("loginError", "ユーザー名とパスワードを入力してください");
+  socket.on("login", (data) => {
+    const { username, password } = data;
+    if (!username || !password || password.length !== 4 || isNaN(password)) {
+      socket.emit("loginError", "ユーザー名と4桁の数字パスワードを入力してください");
+      return;
     }
+
+    users[socket.id] = username;
+
+    socket.emit("loginSuccess");
+    io.emit("message", { username, message: "が入室しました", self: false });
   });
 
   socket.on("message", (data) => {
-    io.emit("message", {
-      username: users[socket.id]?.username || "匿名",
-      message: data.text,
-      senderId: socket.id,
-    });
+    const username = users[socket.id];
+    const message = data.text;
+
+    io.emit("message", { username, message, self: false });
   });
 
   socket.on("disconnect", () => {
-    const user = users[socket.id];
-    if (user) {
-      io.emit("systemMessage", `${user.username} が退室しました`);
+    const username = users[socket.id];
+    if (username) {
+      io.emit("message", { username, message: "が退室しました", self: false });
       delete users[socket.id];
     }
   });
 });
 
-const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-  console.log(`サーバーがポート ${PORT} で起動しました`);
+  console.log(`Server is running on port ${PORT}`);
 });
