@@ -84,7 +84,7 @@ body {
 .message-username {
   font-size: 12px; /* フォントサイズを指定 */
   color: #888; /* 色を薄いグレーに設定 */
-  margin-bottom: 2px; /* バブルとの間隔を追加 */
+  margin-bottom: 4px; /* バブルとの間隔を追加 */
   align-self: flex-start; /* ユーザ名をメッセージの左上に固定 */
 }
 
