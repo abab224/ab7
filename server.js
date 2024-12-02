@@ -33,7 +33,8 @@ io.on("connection", (socket) => {
     const username = users[socket.id] || "匿名";
     const message = data.text;
 
-    io.emit("message", { username, message, self: socket.id === data.senderId });
+    // クライアントから受け取ったメッセージを全クライアントに送信
+    io.emit("message", { username, message, self: false });
   });
 
   socket.on("disconnect", () => {
