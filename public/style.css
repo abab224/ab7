@@ -82,11 +82,12 @@ body {
 
 
 .message-username {
-  font-size: 12px; /* フォントサイズを指定 */
-  color: #888; /* 色を薄いグレーに設定 */
-  margin-bottom: 8; /* バブルとの間隔を追加 */
-  align-self: flex-start; /* ユーザ名をメッセージの左上に固定 */
+  font-size: 12px;             /* ユーザー名のフォントサイズ */
+  color: #888;                /* ユーザー名の文字色 */
+  margin-bottom: 5px;         /* ユーザー名とメッセージの間に余白を追加 */
+  align-self: flex-start;     /* 左端に揃える */
 }
+
 
 
 .message-bubble {
@@ -107,6 +108,7 @@ body {
 .message.received .message-bubble {
   background-color: #e0e0e0;
   color: #000;
+  text-align: left;          /* テキストを左寄せ */
 }
 
 /* 入力エリア */
