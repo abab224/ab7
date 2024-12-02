@@ -66,6 +66,7 @@ body {
   display: flex;
   align-items: flex-start;
   max-width: 100%;
+  width: 100%; /* 親要素の幅を100%に設定 */
 }
 
 .message.received {
@@ -88,6 +89,10 @@ body {
   padding: 10px 15px;
   border-radius: 15px;
   word-wrap: break-word;
+  word-break: break-word;    /* 単語が長すぎる場合でも強制的に改行 */
+  max-width: 70%;            /* メッセージバブルの最大幅（画面幅の70%） */
+  overflow-wrap: break-word; /* 長い文字列に対応 */
+  white-space: normal;       /* テキストを通常の改行ルールに従わせる */
 }
 
 .message.sent .message-bubble {
