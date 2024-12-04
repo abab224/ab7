@@ -1,40 +1,41 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>スマホ最適化チャットUI</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8"> <!-- ページの文字エンコーディングをUTF-8に設定 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- スマートフォンなどの画面サイズに対応 -->
+  <title>スマホ最適化チャットUI</title> <!-- ブラウザのタブに表示されるページのタイトル -->
+  <link rel="stylesheet" href="style.css"> <!-- ページの見た目を整える外部CSSファイルを読み込む -->
 </head>
 <body>
   <!-- ログイン画面 -->
-  <div id="login">
-    <form id="loginForm">
-      <h2>ログイン</h2>
-      <input type="text" id="username" placeholder="ユーザー名" required />
-      <input type="password" id="password" placeholder="パスワード" required />
-      <button type="submit">ログイン</button>
+  <div id="login"> <!-- ログイン画面全体を囲むdiv -->
+    <form id="loginForm"> <!-- ログイン用のフォーム -->
+      <h2>ログイン</h2> <!-- 見出しとして「ログイン」を表示 -->
+      <input type="text" id="username" placeholder="ユーザー名" required /> <!-- ユーザー名入力フィールド -->
+      <input type="password" id="password" placeholder="パスワード" required /> <!-- パスワード入力フィールド -->
+      <button type="submit">ログイン</button> <!-- フォーム送信ボタン -->
     </form>
   </div>
 
   <!-- チャット画面 -->
-  <div id="chat" class="chat-container">
+  <div id="chat" class="chat-container"> <!-- チャット画面全体を囲むdiv -->
     <!-- ヘッダー -->
-    <div class="chat-header">
-      <span class="chat-title">チャット</span>
+    <div class="chat-header"> <!-- チャット画面のヘッダー部分 -->
+      <span class="chat-title">チャット</span> <!-- ヘッダー内に「チャット」のタイトルを表示 -->
     </div>
 
     <!-- チャットエリア -->
-    <div id="chatBox" class="chat-messages"></div>
+    <div id="chatBox" class="chat-messages"></div> <!-- メッセージが表示されるエリア -->
 
     <!-- 入力エリア -->
-    <div id="chatForm" class="chat-input">
-      <input type="text" id="message" class="input-box" placeholder="メッセージを入力..." />
-      <button id="send" class="send-button">送信</button>
+    <div id="chatForm" class="chat-input"> <!-- メッセージ入力エリア -->
+      <input type="text" id="message" class="input-box" placeholder="メッセージを入力..." /> <!-- メッセージ入力フィールド -->
+      <button id="send" class="send-button">送信</button> <!-- メッセージ送信ボタン -->
     </div>
   </div>
 
-  <script src="/socket.io/socket.io.js"></script>
-  <script src="client.js"></script>
+  <!-- 外部スクリプトの読み込み -->
+  <script src="/socket.io/socket.io.js"></script> <!-- Socket.IOのクライアントライブラリを読み込む -->
+  <script src="client.js"></script> <!-- クライアント用のJavaScriptファイルを読み込む -->
 </body>
 </html>

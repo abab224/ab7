@@ -1,144 +1,140 @@
 /* 全体スタイル */
 body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
+  margin: 0; /* ページ全体の余白をなくす */
+  font-family: Arial, sans-serif; /* Arialフォント、または代替フォントを使用 */
+  background-color: #f5f5f5; /* 背景色を明るいグレーに設定 */
+  display: flex; /* 子要素をフレックスボックスで配置 */
+  justify-content: center; /* 子要素を水平方向に中央揃え */
+  align-items: center; /* 子要素を垂直方向に中央揃え */
+  height: 100vh; /* 高さを画面全体に設定 */
 }
 
 /* ログイン画面 */
 #login {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
+  display: flex; /* フレックスボックスで子要素を配置 */
+  flex-direction: column; /* 子要素を縦方向に並べる */
+  align-items: center; /* 子要素を中央揃え */
+  gap: 10px; /* 子要素間の間隔を10pxに設定 */
 }
 
 #login.hidden {
-  display: none;
+  display: none; /* 隠された状態で表示しない */
 }
 
 /* チャット画面 */
 #chat {
-  display: none;
+  display: none; /* 初期状態では表示しない */
 }
 
 #chat.active {
-  display: flex;
+  display: flex; /* アクティブ状態になったらフレックスボックスで表示 */
 }
 
 .chat-container {
-  width: 360px;
-  height: 550px;
-  background-color: #ffffff;
-  display: flex;
-  flex-direction: column;
-  border-radius: 10px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow: hidden;
+  width: 360px; /* コンテナの幅 */
+  height: 550px; /* コンテナの高さ */
+  background-color: #ffffff; /* 背景色を白に設定 */
+  display: flex; /* 子要素をフレックスボックスで配置 */
+  flex-direction: column; /* 子要素を縦方向に並べる */
+  border-radius: 10px; /* 角を丸くする */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* コンテナに薄い影を追加 */
+  overflow: hidden; /* コンテナ外に出た内容を非表示にする */
 }
 
 /* ヘッダー部分 */
 .chat-header {
-  background-color: #00b900;
-  color: white;
-  padding: 15px;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
+  background-color: #00b900; /* ヘッダーの背景色を緑に設定 */
+  color: white; /* ヘッダーの文字色を白に設定 */
+  padding: 15px; /* 内側に15pxの余白を設定 */
+  text-align: center; /* テキストを中央揃え */
+  font-size: 18px; /* フォントサイズを18pxに設定 */
+  font-weight: bold; /* フォントを太字に設定 */
 }
 
 /* チャットメッセージのエリア */
 .chat-messages {
-  flex: 1;
-  padding: 10px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+  flex: 1; /* 残りのスペースをすべて占有 */
+  padding: 10px; /* 内側に10pxの余白を設定 */
+  overflow-y: auto; /* 縦方向にスクロール可能にする */
+  display: flex; /* フレックスボックスで子要素を配置 */
+  flex-direction: column; /* 子要素を縦方向に並べる */
+  gap: 10px; /* 子要素間の間隔を10pxに設定 */
 }
 
 /* メッセージスタイル */
 .message {
-  display: flex;
-  flex-direction: column; /* 縦方向に配置 */
+  display: flex; /* フレックスボックスで子要素を配置 */
+  flex-direction: column; /* 子要素を縦方向に並べる */
   align-items: flex-start; /* 左端に揃える */
-  max-width: 100%;
-  width: 100%; /* 親要素の幅を100%に設定 */
+  max-width: 100%; /* 最大幅を親要素の幅に合わせる */
+  width: 100%; /* 幅を親要素に揃える */
 }
 
 .message.received {
   justify-content: flex-start; /* メッセージを左揃え */
-  align-items: flex-start; /* メッセージを左端に配置 */
+  align-items: flex-start; /* 左端に配置 */
 }
-
 
 .message.sent {
   justify-content: flex-end; /* メッセージを右揃え */
-  align-items: flex-end; /* メッセージを右端に配置 */
+  align-items: flex-end; /* 右端に配置 */
 }
-
 
 .message-username {
-  font-size: 12px;             /* ユーザー名のフォントサイズ */
-  color: #888;                /* ユーザー名の文字色 */
-  margin-bottom: 5px;         /* ユーザー名とメッセージの間に余白を追加 */
+  font-size: 12px; /* ユーザー名のフォントサイズを小さく設定 */
+  color: #888; /* ユーザー名の文字色をグレーに設定 */
+  margin-bottom: 5px; /* ユーザー名とメッセージの間に余白を追加 */
 }
 
-
-
 .message-bubble {
-  padding: 10px 15px;
-  border-radius: 15px;
-  word-wrap: break-word;
-  word-break: break-word;    /* 単語が長すぎる場合でも強制的に改行 */
-  max-width: 70%;            /* メッセージバブルの最大幅（画面幅の70%） */
-  overflow-wrap: break-word; /* 長い文字列に対応 */
-  white-space: normal;       /* テキストを通常の改行ルールに従わせる */
+  padding: 10px 15px; /* メッセージ内の余白を設定 */
+  border-radius: 15px; /* 角を丸くする */
+  word-wrap: break-word; /* 長い単語を改行可能にする */
+  word-break: break-word; /* 単語が長すぎる場合でも改行 */
+  max-width: 70%; /* 最大幅を親要素の70%に設定 */
+  overflow-wrap: break-word; /* 長い文字列を適切に折り返す */
+  white-space: normal; /* 通常の改行ルールを適用 */
 }
 
 .message.sent .message-bubble {
-  background-color: #a8e6a1;
-  color: #000;
+  background-color: #a8e6a1; /* 送信メッセージの背景色を緑に設定 */
+  color: #000; /* 送信メッセージの文字色を黒に設定 */
 }
 
 .message.received .message-bubble {
-  background-color: #e0e0e0;
-  color: #000;
-  text-align: left;          /* テキストを左寄せ */
+  background-color: #e0e0e0; /* 受信メッセージの背景色をグレーに設定 */
+  color: #000; /* 受信メッセージの文字色を黒に設定 */
+  text-align: left; /* テキストを左寄せに設定 */
 }
 
 /* 入力エリア */
 .chat-input {
-  display: flex;
-  border-top: 1px solid #ddd;
-  padding: 10px;
-  background-color: #f8f8f8;
+  display: flex; /* 子要素を横並びにする */
+  border-top: 1px solid #ddd; /* 上に薄い境界線を追加 */
+  padding: 10px; /* 内側に10pxの余白を設定 */
+  background-color: #f8f8f8; /* 背景色を薄いグレーに設定 */
 }
 
 .input-box {
-  flex: 1;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-  border-radius: 20px;
-  outline: none;
-  margin-right: 10px;
+  flex: 1; /* 残りのスペースをすべて占有 */
+  padding: 10px; /* 内側に余白を追加 */
+  font-size: 16px; /* フォントサイズを設定 */
+  border: 1px solid #ddd; /* 薄い境界線を追加 */
+  border-radius: 20px; /* 角を丸くする */
+  outline: none; /* フォーカス時の青枠を非表示にする */
+  margin-right: 10px; /* 右側に余白を追加 */
 }
 
 .send-button {
-  background-color: #00b900;
-  color: white;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 20px;
-  font-size: 16px;
-  cursor: pointer;
+  background-color: #00b900; /* ボタンの背景色を緑に設定 */
+  color: white; /* ボタンの文字色を白に設定 */
+  border: none; /* 境界線をなくす */
+  padding: 10px 20px; /* 内側に余白を設定 */
+  border-radius: 20px; /* 角を丸くする */
+  font-size: 16px; /* フォントサイズを設定 */
+  cursor: pointer; /* ポインタカーソルを表示 */
 }
 
 .send-button:hover {
-  background-color: #008f00;
+  background-color: #008f00; /* ホバー時の背景色を濃い緑に設定 */
 }
