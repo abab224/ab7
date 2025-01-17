@@ -36,8 +36,9 @@ io.on("connection", (socket) => {
 
     // ユーザー情報を`users`オブジェクトに保存
     users[socket.id] = { username, password };
-     // パスワードごとにルームを作成・管理
-     if (!rooms[password]) {
+
+    // パスワードごとにルームを作成・管理
+    if (!rooms[password]) {
       rooms[password] = [];
     }
     rooms[password].push(socket.id);
@@ -45,34 +46,40 @@ io.on("connection", (socket) => {
     // ユーザーをパスワードに基づくルームに参加させる
     socket.join(password);
 
-    // 入室状況を送信 (接続したユーザーに現在の状況を通知)
-    socket.emit(
-      "status",
-      Object.keys(users).length > 1 // ユーザーが複数いる場合
-        ? `${Object.values(users)
-            .map((user) => user.username) // 全ユーザー名を取得
-            .join(", ")} が入室しています` // 入室中のユーザー一覧を表示
-        : "相手ユーザをお待ちください" // 他のユーザーがいない場合
-    );
+    // 入室状況を送信 (ルーム内の全ユーザー情報を取得して通知)
+    const roomUsers = rooms[password].map((id) => users[id]?.username || "不明なユーザー");
+    socket.emit("status", `現在のルームには: ${roomUsers.join(", ")} がいます`);
 
     // 他のユーザーに新しいユーザーの入室を通知
-    socket.broadcast.emit("system", `${username} が入室しました`);
+    socket.to(password).emit("system", `${username} が入室しました`);
   });
 
   // メッセージ送信処理 (クライアントから"message"イベントを受け取ったとき)
   socket.on("message", (message) => {
     // メッセージを送信したユーザー情報を取得
-    const user = users[socket.id] || { username: "匿名" }; // 不明な場合は匿名
-    // 他の全ユーザーにメッセージを送信
-    socket.broadcast.emit("message", { username: user.username, message, self: false });
+    const user = users[socket.id];
+    if (user) {
+      // ユーザーが所属するルーム内の全員にメッセージを送信
+      io.to(user.password).emit("message", { username: user.username, message });
+    }
   });
 
   // 切断処理 (ユーザーが接続を終了したとき)
   socket.on("disconnect", () => {
     const user = users[socket.id]; // 切断するユーザー情報を取得
     if (user) {
+      // ルームからユーザーを削除
+      const room = rooms[user.password];
+      if (room) {
+        rooms[user.password] = room.filter((id) => id !== socket.id);
+        if (rooms[user.password].length === 0) {
+          delete rooms[user.password]; // ルームが空になったら削除
+        }
+      }
+
       // 他のユーザーに切断したことを通知
-      socket.broadcast.emit("system", `${user.username} が退室しました`);
+      socket.to(user.password).emit("system", `${user.username} が退室しました`);
+
       // ユーザー情報を削除
       delete users[socket.id];
     }
