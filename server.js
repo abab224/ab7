@@ -18,7 +18,6 @@ app.use(express.static("public"));
 // キー: `socket.id` (接続固有のID)
 // 値: ユーザー情報 (usernameとpassword)
 let users = {};
-let rooms = {}; // パスワードごとにユーザーを分ける
 
 // WebSocketの接続処理
 io.on("connection", (socket) => {
@@ -36,19 +35,18 @@ io.on("connection", (socket) => {
 
     // ユーザー情報を`users`オブジェクトに保存
     users[socket.id] = { username, password };
+    socket.join(password); // パスワードごとにルームを分ける
 
-    // パスワードごとにルームを作成・管理
-    if (!rooms[password]) {
-      rooms[password] = [];
-    }
-    rooms[password].push(socket.id);
+    // 現在のルーム内の全ユーザー名を取得
+    const roomUsers = Array.from(io.sockets.adapter.rooms.get(password) || [])
+      .map((id) => users[id]?.username || "不明なユーザー")
+      .join(", ");
 
-    // ユーザーをパスワードに基づくルームに参加させる
-    socket.join(password);
-
-    // 入室状況を送信 (ルーム内の全ユーザー情報を取得して通知)
-    const roomUsers = rooms[password].map((id) => users[id]?.username || "不明なユーザー");
-    socket.emit("status", `現在のルームには: ${roomUsers.join(", ")} がいます`);
+    // 入室状況を送信 (接続したユーザーに現在の状況を通知)
+    socket.emit(
+      "status",
+      roomUsers ? `${roomUsers} が入室しています` : "相手ユーザをお待ちください"
+    );
 
     // 他のユーザーに新しいユーザーの入室を通知
     socket.to(password).emit("system", `${username} が入室しました`);
@@ -56,32 +54,17 @@ io.on("connection", (socket) => {
 
   // メッセージ送信処理 (クライアントから"message"イベントを受け取ったとき)
   socket.on("message", (message) => {
-    // メッセージを送信したユーザー情報を取得
-    const user = users[socket.id];
-    if (user) {
-      // ユーザーが所属するルーム内の全員にメッセージを送信
-      io.to(user.password).emit("message", { username: user.username, message });
-    }
+    const user = users[socket.id] || { username: "匿名" }; // 不明な場合は匿名
+    socket.to(user.password).emit("message", { username: user.username, message, self: false });
   });
 
   // 切断処理 (ユーザーが接続を終了したとき)
   socket.on("disconnect", () => {
     const user = users[socket.id]; // 切断するユーザー情報を取得
     if (user) {
-      // ルームからユーザーを削除
-      const room = rooms[user.password];
-      if (room) {
-        rooms[user.password] = room.filter((id) => id !== socket.id);
-        if (rooms[user.password].length === 0) {
-          delete rooms[user.password]; // ルームが空になったら削除
-        }
-      }
-
       // 他のユーザーに切断したことを通知
       socket.to(user.password).emit("system", `${user.username} が退室しました`);
-
-      // ユーザー情報を削除
-      delete users[socket.id];
+      delete users[socket.id]; // ユーザー情報を削除
     }
   });
 });
